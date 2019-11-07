@@ -24,21 +24,21 @@ async function checkPass(){
 
   let passCheck = await check(passlist, inpPass.value);
 
-  if(passCheck){
+  if(passCheck[0]){
     const endDate = new Date();
     let dt = endDate - startDate;
     console.log(dt/1000);
-    divRes.innerHTML += `<li>Det tok ${dt/1000}s å knekke passordet <b>${inpPass.value}</b></li>`;
+    divRes.innerHTML += `<li>Det tok ${passCheck[1]} antall forsøk og ${dt/1000}s for å knekke passordet <b>${inpPass.value}</b></li>`;
   }else{
-    divRes.innerHTML += `<li>Klarte ikke knekke passordet <b>${inpPass.value}</b></li>`;
+    divRes.innerHTML += `<li>Brukte ${passCheck[1]} antall forsøk, og klarte <br>ikke</br> knekke passordet <b>${inpPass.value}</b></li>`;
   }
 }
 
 function check(list,uPass){
-  for(const pass of list){
-    if(uPass === pass){
-      return true;
+  for(const pass in list){
+    if(uPass === list[pass]){
+      return [true, pass];
     }
   }
-  return false;
+  return [false,list.length];
 }
